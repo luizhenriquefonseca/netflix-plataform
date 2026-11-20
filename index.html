@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix — Quem está assistindo?</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Cabeçalho com logo -->
+    <header class="top-bar">
+        <img class="brand-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+    </header>
+
+    <!-- Conteúdo central: grade de perfis de usuário -->
+    <main>
+        <section class="profiles-wrapper" aria-label="Seleção de perfis">
+            <h1>Quem está assistindo?</h1>
+
+            <ul class="profiles" id="profiles-list" aria-label="Lista de perfis">
+                <li>
+                    <article class="profile">
+                        <a href="catalogo/catalogo.html" data-profile="Luiz" data-avatar="img/avatar-luiz.png" aria-label="Selecionar Perfil Luiz">
+                            <figure>
+                                <img src="img/avatar-luiz.png"
+                                     alt="Avatar do perfil Luiz">
+                            </figure>
+                            <div class="profile-name">Luiz</div>
+                        </a>
+                    </article>
+                </li>
+
+                <li>
+                    <article class="profile">
+                        <a href="catalogo/catalogo.html" data-profile="Yasmim" data-avatar="img/avatar-yasmim.png" aria-label="Selecionar Perfil Yasmim">
+                            <figure>
+                                <img src="img/avatar-yasmim.png"
+                                     alt="Avatar do perfil Yasmim">
+                            </figure>
+                            <div class="profile-name">Yasmim</div>
+                        </a>
+                    </article>
+                </li>
+
+                <li>
+                    <article class="profile">
+                        <a href="catalogo/catalogo.html" data-profile="Maya" data-avatar="img/avatar-maya.png" aria-label="Selecionar Perfil Maya">
+                            <figure class="kids-avatar">
+                                <img src="img/avatar-maya.png"
+                                     alt="Avatar do perfil Maya">
+                            </figure>
+                            <div class="profile-name">Maya</div>
+                        </a>
+                    </article>
+                </li>
+            </ul>
+
+            <button type="button" class="manage-btn" id="btn-add-profile">
+                <i class="fas fa-plus"></i> Adicionar Perfil
+            </button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Netflix Brasil Clone © 2026 — Projeto de Portfólio</p>
+    </footer>
+
+    <script>
+        // Salva o perfil selecionado no localStorage para personalizar a tela do catálogo
+        document.querySelectorAll('.profile a').forEach(link => {
+            link.addEventListener('click', () => {
+                const name = link.getAttribute('data-profile');
+                const avatar = link.querySelector('img').src;
+                localStorage.setItem('netflix_active_profile', JSON.stringify({ name, avatar }));
+            });
+        });
+
+        // Permite criar um novo perfil dinâmico na sessão
+        document.getElementById('btn-add-profile').addEventListener('click', () => {
+            const newName = prompt('Digite o nome do novo perfil:');
+            if (!newName || !newName.trim()) return;
+
+            const cleanName = newName.trim();
+            const defaultAvatar = 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png';
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <article class="profile">
+                    <a href="catalogo/catalogo.html" data-profile="${cleanName}" aria-label="Selecionar Perfil ${cleanName}">
+                        <figure>
+                            <img src="${defaultAvatar}" alt="Avatar de ${cleanName}">
+                        </figure>
+                        <div class="profile-name">${cleanName}</div>
+                    </a>
+                </article>
+            `;
+            li.querySelector('a').addEventListener('click', () => {
+                localStorage.setItem('netflix_active_profile', JSON.stringify({ name: cleanName, avatar: defaultAvatar }));
+            });
+            document.getElementById('profiles-list').appendChild(li);
+        });
+    </script>
+</body>
+
+</html>
